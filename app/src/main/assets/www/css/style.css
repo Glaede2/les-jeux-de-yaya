@@ -1,0 +1,733 @@
+/* ---------- Base : plein écran, pas de sélection, pas de zoom ---------- */
+/* Police ronde Fredoka (licence SIL OFL), incluse dans l'appli : pas besoin d'Internet */
+@font-face {
+  font-family: 'Fredoka';
+  src: url(../fonts/fredoka.woff2) format('woff2');
+  font-weight: 300 700;
+  font-display: block;
+}
+:root {
+  --bg: #fff7e8;
+  --ink: #3a2e5a;
+  --shadow: 0 6px 0 rgba(58, 46, 90, .18);
+}
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  touch-action: none;
+}
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Fredoka', "Comic Sans MS", "Roboto", sans-serif;
+  overscroll-behavior: none;
+}
+button {
+  border: none;
+  font: inherit;
+  color: inherit;
+  background: none;
+  cursor: pointer;
+}
+.screen {
+  position: fixed;
+  left: 0; top: 0; right: 0; bottom: 0;
+}
+.hidden { display: none !important; }
+
+/* ---------- Menu ---------- */
+#menu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: linear-gradient(#8fd3ff 0%, #c4ebff 55%, #e9f9ff 100%);
+}
+
+/* Décor (animations légères : seulement des déplacements, gérés par la carte graphique) */
+.scene {
+  position: absolute;
+  left: 0; top: 0; right: 0; bottom: 0;
+  pointer-events: none;
+}
+.sun {
+  position: absolute;
+  right: 7vw;
+  top: 6vh;
+  width: 16vh;
+  height: 16vh;
+  border-radius: 50%;
+  background: #ffd23f;
+  box-shadow: 0 0 0 2.5vh rgba(255, 210, 63, .3), 0 0 0 5vh rgba(255, 210, 63, .14);
+  animation: sun 5s ease-in-out infinite;
+}
+@keyframes sun {
+  50% { transform: scale(1.07); }
+}
+.cloud {
+  position: absolute;
+  left: 0;
+  width: 22vh;
+  height: 7vh;
+  border-radius: 7vh;
+  background: #fff;
+  opacity: .9;
+  animation: drift linear infinite;
+}
+.cloud::before, .cloud::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  background: #fff;
+}
+.cloud::before { width: 9vh; height: 9vh; left: 3.5vh; top: -4.5vh; }
+.cloud::after { width: 12vh; height: 12vh; left: 8.5vh; top: -6.5vh; }
+.c1 { top: 14vh; animation-duration: 70s; animation-delay: -20s; }
+.c2 { top: 34vh; --s: .65; animation-duration: 95s; animation-delay: -60s; opacity: .75; }
+.c3 { top: 6vh; --s: .8; animation-duration: 80s; animation-delay: -45s; }
+@keyframes drift {
+  from { transform: translateX(-30vh) scale(var(--s, 1)); }
+  to { transform: translateX(calc(100vw + 10vh)) scale(var(--s, 1)); }
+}
+.hills {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 34vh;
+}
+
+/* Le prénom : grosses lettres de couleur avec un contour blanc, qui ondulent */
+#title {
+  position: relative;
+  display: flex;
+  gap: .6vh;
+  margin: 0 0 3.5vh;
+  font-size: 15vh;
+  font-weight: 700;
+  line-height: 1;
+}
+#title .letter {
+  display: inline-block;
+  color: var(--c);
+  text-shadow:
+    .7vh 0 #fff, -.7vh 0 #fff, 0 .7vh #fff, 0 -.7vh #fff,
+    .5vh .5vh #fff, -.5vh .5vh #fff, .5vh -.5vh #fff, -.5vh -.5vh #fff,
+    0 1.6vh 0 rgba(58, 46, 90, .18);
+  animation: wave 2.6s ease-in-out infinite;
+  animation-delay: calc(var(--i) * -.3s);
+}
+#title .letter.pop { animation: letterPop .5s ease-out; }
+@keyframes wave {
+  0%, 100% { transform: translateY(0) rotate(-4deg); }
+  50% { transform: translateY(-1.6vh) rotate(4deg); }
+}
+@keyframes letterPop {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.35) translateY(-2vh); }
+  100% { transform: scale(1); }
+}
+
+/* Tuiles des jeux : boutons bonbon qui flottent doucement */
+#tiles {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4vh 4vw;
+  width: min(90vw, 140vh);
+}
+.tile {
+  height: 29vh;
+  animation: float 4s ease-in-out infinite;
+  animation-delay: calc(var(--i) * -.7s);
+}
+@keyframes float {
+  50% { transform: translateY(-1vh); }
+}
+.tile-body {
+  height: 100%;
+  border-radius: 5vh;
+  background: var(--c);
+  box-shadow:
+    inset 0 -1.3vh 0 rgba(0, 0, 0, .12),
+    inset 0 1vh 0 rgba(255, 255, 255, .28),
+    0 1.2vh 0 rgba(58, 46, 90, .16);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: transform .12s;
+}
+.tile.pressed .tile-body { transform: scale(.92); }
+.tile .icon-wrap {
+  width: 17vh;
+  height: 17vh;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.tile .icon { font-size: 12vh; line-height: 1; }
+.tile .label {
+  margin-top: 1vh;
+  font-size: 3.8vh;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: .05em;
+  text-shadow: 0 .4vh 0 rgba(0, 0, 0, .15);
+}
+
+/* Boutons parents (à maintenir 3 s) : réglages à gauche, sortie à droite */
+#gear { left: 1.5vh; }
+#lock { right: 1.5vh; }
+.hold-btn {
+  position: absolute;
+  bottom: 1.5vh;
+  width: 8vh;
+  height: 8vh;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3.5vh;
+  opacity: .35;
+  overflow: hidden;
+}
+.hold-btn i {
+  position: absolute;
+  left: 0; bottom: 0;
+  width: 100%;
+  height: 0;
+  background: rgba(255, 111, 145, .5);
+}
+.hold-btn.holding { opacity: 1; }
+.hold-btn.holding i { height: 100%; transition: height 3s linear; }
+
+/* ---------- Écran de jeu ---------- */
+#game-root {
+  position: absolute;
+  left: 0; top: 0; right: 0; bottom: 0;
+  overflow: hidden;
+}
+.round-btn {
+  width: 11vh;
+  height: 11vh;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: var(--shadow);
+  font-size: 6vh;
+  line-height: 11vh;
+  text-align: center;
+  transition: transform .12s;
+}
+.round-btn:active { transform: scale(.9); }
+.round-btn.on { background: #ffe066; }
+#home {
+  position: absolute;
+  left: 2vh;
+  top: 2vh;
+  z-index: 50;
+}
+
+#fx {
+  position: fixed;
+  left: 0; top: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 100;
+}
+
+/* Animation commune : rebond */
+@keyframes bounce {
+  0% { transform: scale(1); }
+  30% { transform: scale(1.25) rotate(-6deg); }
+  55% { transform: scale(.92) rotate(4deg); }
+  80% { transform: scale(1.06); }
+  100% { transform: scale(1); }
+}
+.bounce { animation: bounce .6s ease-out; }
+
+/* ---------- Coloriage ---------- */
+.coloring {
+  position: absolute;
+  left: 0; top: 0; right: 0; bottom: 0;
+  display: flex;
+  background: #eef6ff;
+}
+.coloring .stage {
+  position: relative;
+  flex: 1;
+  margin: 2vh 0 2vh 17vh;
+}
+.coloring canvas {
+  position: absolute;
+  left: 0; top: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 3vh;
+  background: #fff;
+  box-shadow: var(--shadow);
+}
+.coloring .side {
+  width: 31vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1vh 0;
+}
+.palette {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.3vh;
+}
+.swatch {
+  width: 8vh;
+  height: 8vh;
+  border-radius: 50%;
+  box-shadow: inset 0 -4px 0 rgba(0, 0, 0, .15), 0 3px 0 rgba(0, 0, 0, .12);
+  border: .5vh solid #fff;
+  transition: transform .12s;
+}
+.swatch.on { transform: scale(1.2); border-color: var(--ink); }
+.tools {
+  position: absolute;
+  left: 2vh;
+  top: 15vh;
+  bottom: 2vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2vh;
+}
+.tools .round-btn { width: 10vh; height: 10vh; line-height: 10vh; font-size: 5vh; }
+/* Pot, crayon et gomme regroupés dans une même boîte */
+.toolgroup {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2vh;
+  padding: 1.2vh;
+  border-radius: 7vh;
+  background: #d6e6fb;
+}
+.tools .spacer { flex: 1; }
+
+/* ---------- Puzzle ---------- */
+.puzzle {
+  position: absolute;
+  left: 0; top: 0; right: 0; bottom: 0;
+  /* une table en bois clair */
+  background:
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, .06) 0 2px, transparent 2px 9vh),
+    linear-gradient(#e9c9a0, #ddb68a);
+}
+.puzzle canvas {
+  position: absolute;
+  left: 0; top: 0;
+  width: 100%;
+  height: 100%;
+}
+.bar {
+  position: absolute;
+  top: 2vh;
+  right: 2vh;
+  display: flex;
+  align-items: center;
+  gap: 2vh;
+  z-index: 10;
+}
+/* Choix du nombre de pièces */
+.chips {
+  display: flex;
+  align-items: center;
+  gap: .8vh;
+  height: 11vh;
+  padding: 0 1.2vh;
+  border-radius: 6vh;
+  background: rgba(255, 255, 255, .55);
+}
+.chips-icon { font-size: 5vh; padding: 0 .8vh; }
+.chip {
+  min-width: 8.5vh;
+  height: 8.5vh;
+  padding: 0 .9vh;
+  border-radius: 5vh;
+  background: #fff;
+  box-shadow: 0 4px 0 rgba(58, 46, 90, .18);
+  font-size: 4vh;
+  font-weight: bold;
+}
+.chip.on {
+  background: #3a2e5a;
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 rgba(58, 46, 90, .25);
+}
+/* Petite grille de pièces dans chaque bouton de difficulté */
+.chip .mini {
+  display: grid;
+  gap: .35vh;
+  width: 7vh;
+  height: 5.2vh;
+  margin: 0 auto;
+}
+.chip .mini span { border-radius: .5vh; }
+.puzzle-progress {
+  position: absolute;
+  top: 3.5vh;
+  left: 16vh;
+  padding: 1vh 2.4vh;
+  border-radius: 5vh;
+  background: rgba(255, 255, 255, .7);
+  font-size: 4vh;
+  font-weight: bold;
+  z-index: 10;
+}
+
+/* ---------- Animaux ---------- */
+.animals {
+  position: absolute;
+  left: 0; top: 0; right: 0; bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.animals .grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4vh 5vw;
+}
+.animal {
+  position: relative;
+  width: 36vh;
+  height: 36vh;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .75);
+  box-shadow: var(--shadow);
+  font-size: 22vh;
+  line-height: 36vh;
+  text-align: center;
+}
+.bubble-say {
+  position: absolute;
+  left: 50%;
+  top: -6vh;
+  transform: translateX(-50%);
+  background: #fff;
+  border-radius: 4vh;
+  padding: .8vh 2.5vh;
+  font-size: 4.5vh;
+  line-height: 1.3;
+  font-weight: bold;
+  white-space: nowrap;
+  box-shadow: var(--shadow);
+  animation: sayIn .25s ease-out;
+  pointer-events: none;
+  z-index: 5;
+}
+@keyframes sayIn {
+  from { transform: translateX(-50%) scale(.3); opacity: 0; }
+  to { transform: translateX(-50%) scale(1); opacity: 1; }
+}
+.nav-btn {
+  position: absolute;
+  top: 50%;
+  margin-top: -6vh;
+  width: 12vh;
+  height: 12vh;
+  line-height: 12vh;
+}
+.nav-btn.left { left: 2vh; }
+.nav-btn.right { right: 2vh; }
+/* Points qui montrent la page en cours */
+.page-dots {
+  position: absolute;
+  left: 0; right: 0;
+  bottom: 2.5vh;
+  display: flex;
+  justify-content: center;
+  gap: 1.6vh;
+}
+.page-dots span {
+  width: 2.2vh;
+  height: 2.2vh;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .6);
+}
+.page-dots span.on { background: #3a2e5a; }
+
+/* ---------- Bulles ---------- */
+.bubbles {
+  position: absolute;
+  left: 0; top: 0; right: 0; bottom: 0;
+  background: linear-gradient(#7fd4ff, #2f8fd8);
+}
+.bubbles canvas {
+  position: absolute;
+  left: 0; top: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* ---------- Piano ---------- */
+.piano {
+  position: absolute;
+  left: 0; top: 0; right: 0; bottom: 0;
+  background: #2d2a4a;
+  display: flex;
+  padding: 16vh 2vh 2vh;
+  gap: 1.2vh;
+}
+.key {
+  flex: 1;
+  border-radius: 2vh 2vh 4vh 4vh;
+  box-shadow: inset 0 -2.5vh 0 rgba(0, 0, 0, .18);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 5vh;
+  font-size: 8vh;
+  transition: transform .08s, filter .08s;
+  transform-origin: top center;
+}
+.key.down {
+  transform: scaleY(.97);
+  filter: brightness(1.25);
+  box-shadow: inset 0 -1vh 0 rgba(0, 0, 0, .18);
+}
+.flying-note {
+  position: absolute;
+  font-size: 7vh;
+  pointer-events: none;
+  animation: fly 1.2s ease-out forwards;
+}
+@keyframes fly {
+  from { transform: translateY(0) scale(.6); opacity: 1; }
+  to { transform: translateY(-45vh) scale(1.3) rotate(20deg); opacity: 0; }
+}
+.piano .bar { top: 2.5vh; }
+
+/* ---------- Memory ---------- */
+.memory {
+  position: absolute;
+  left: 0; top: 0; right: 0; bottom: 0;
+  background: #e9ffe6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.memory .grid {
+  display: grid;
+  gap: var(--gap, 3vh);
+  margin-top: 12vh; /* laisse la place à la barre de difficulté */
+}
+/* Taille des cartes calculée par le jeu selon le niveau (--cw, --ch) */
+.card {
+  position: relative;
+  width: var(--cw, 26vh);
+  height: var(--ch, 32vh);
+  perspective: 600px;
+}
+.card .face {
+  position: absolute;
+  left: 0; top: 0; right: 0; bottom: 0;
+  border-radius: 3vh;
+  box-shadow: var(--shadow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  transition: transform .35s;
+}
+.card .back {
+  background: repeating-linear-gradient(45deg, #8e7cff 0 3vh, #a596ff 3vh 6vh);
+  border: .8vh solid #fff;
+  font-size: calc(var(--ch, 32vh) * .28);
+}
+.card .front {
+  background: #fff;
+  font-size: calc(var(--ch, 32vh) * .56);
+  transform: rotateY(180deg);
+}
+.card .front img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 3vh;
+  pointer-events: none;
+}
+.card.open .back { transform: rotateY(-180deg); }
+.card.open .front { transform: rotateY(0deg); }
+.card.found .front { background: #fff7b8; }
+
+/* ---------- Espace parents ---------- */
+.admin {
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  background: #f4f1fb;
+  font-family: "Roboto", sans-serif;
+  font-size: 16px;
+}
+.admin, .admin * { touch-action: pan-y; }
+.admin input[type="text"] {
+  -webkit-user-select: text;
+  user-select: text;
+}
+.admin-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  background: #3a2e5a;
+  color: #fff;
+}
+.admin-head h2 { font-size: 20px; }
+.admin-btn {
+  padding: 10px 18px;
+  border-radius: 10px;
+  background: #fff;
+  color: #3a2e5a;
+  font-size: 16px;
+  font-weight: bold;
+  box-shadow: 0 2px 0 rgba(0, 0, 0, .15);
+}
+.admin-btn.primary { background: #ff6f91; color: #fff; }
+.admin-btn:disabled { opacity: .6; }
+.admin-tabs {
+  display: flex;
+  gap: 8px;
+  padding: 10px 16px 0;
+}
+.admin-tab {
+  padding: 10px 18px;
+  border-radius: 10px 10px 0 0;
+  background: #ddd6f3;
+  font-size: 16px;
+}
+.admin-tab.on { background: #fff; font-weight: bold; }
+.admin-body {
+  flex: 1;
+  overflow-y: auto;
+  background: #fff;
+  margin: 0 16px 16px;
+  padding: 16px;
+  border-radius: 0 10px 10px 10px;
+}
+.admin-toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: bold;
+}
+.admin-toggle input { width: 24px; height: 24px; }
+.admin-help {
+  margin: 8px 0 16px;
+  color: #6b6385;
+  line-height: 1.4;
+  max-width: 900px;
+}
+.admin-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 14px;
+}
+.admin-item {
+  position: relative;
+  border-radius: 12px;
+  background: #f4f1fb;
+  overflow: hidden;
+  text-align: center;
+}
+.admin-item img {
+  display: block;
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  background: #fff;
+}
+.admin-item .name {
+  padding: 6px;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.admin-item .del {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  min-width: 36px;
+  height: 36px;
+  padding: 0 8px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, .9);
+  font-size: 16px;
+}
+.admin-item .del.armed { background: #e63946; color: #fff; font-weight: bold; }
+.admin-add {
+  min-height: 150px;
+  border: 3px dashed #b9aee0;
+  background: #fff;
+  color: #6b6385;
+}
+.admin-add .plus { font-size: 48px; line-height: 1.6; }
+.admin-editor {
+  position: absolute;
+  left: 0; top: 0; right: 0; bottom: 0;
+  background: rgba(30, 24, 50, .6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.admin-editor .box {
+  display: flex;
+  gap: 16px;
+  width: 92%;
+  height: 88%;
+  padding: 16px;
+  border-radius: 14px;
+  background: #fff;
+}
+.admin-editor .view {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #eee;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.admin-editor canvas { max-width: 100%; max-height: 100%; background: #fff; }
+.admin-editor .form {
+  width: 280px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.admin-editor label { font-weight: bold; margin-top: 8px; }
+.admin-input {
+  padding: 10px;
+  border: 2px solid #ddd6f3;
+  border-radius: 8px;
+  font-size: 16px;
+}
+.admin-range { width: 100%; height: 36px; touch-action: none; }
+.admin-hint { color: #6b6385; font-size: 13px; }
+.admin-editor .buttons {
+  margin-top: auto;
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}

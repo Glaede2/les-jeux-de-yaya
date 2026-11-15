@@ -1,0 +1,12 @@
+.gradle/
+build/
+app/build/
+local.properties
+.idea/
+*.iml
+.claude/
+# L'APK est publié dans les releases GitHub, pas dans le dépôt
+*.apk
+
+# Images perso (droits d'auteur, photos de famille) : jamais dans le dépôt public
+custom/

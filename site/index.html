@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Les jeux de Yaya · petits jeux tout doux pour Android</title>
+  <meta name="description" content="Six petits jeux tout doux pour les 3 ans et plus : coloriage, puzzles, cris des animaux, bulles, piano et memory. Sans pub, sans Internet, sans permission.">
+  <meta name="theme-color" content="#8fd3ff">
+  <meta property="og:title" content="Les jeux de Yaya">
+  <meta property="og:description" content="Six petits jeux tout doux pour les tout-petits, sur tablette Android.">
+  <meta property="og:image" content="https://yaya.glaede.fr/img/menu.webp">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="fonts/fredoka.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Bulles qui montent en fond (créées par app.js) -->
+  <div class="bubbles" aria-hidden="true"></div>
+
+  <!-- =========================== Haut de page =========================== -->
+  <header class="hero">
+    <div class="sky" aria-hidden="true">
+      <div class="sun"></div>
+      <div class="cloud c1"></div>
+      <div class="cloud c2"></div>
+      <div class="cloud c3"></div>
+    </div>
+
+    <div class="hero-inner">
+      <div class="hero-text">
+        <p class="kicker">Les jeux de</p>
+        <h1 class="name" aria-label="Yaya">
+          <span style="--c:#ff5d8f;--i:0">Y</span><span style="--c:#ffb703;--i:1">a</span><span style="--c:#4cc9a0;--i:2">y</span><span style="--c:#4cc9f0;--i:3">a</span>
+        </h1>
+        <p class="tagline">Six petits jeux tout doux pour les petites mains&nbsp;:<br>on colorie, on emboîte, on écoute, on s'amuse.</p>
+
+        <a class="candy download" id="download" href="https://github.com/Glaede2/les-jeux-de-yaya/releases/latest/download/LesJeuxDeYaya.apk">
+          <span class="candy-icon">⬇️</span>
+          <span>
+            <strong>Télécharger l'appli</strong>
+            <small>pour tablette Android</small>
+          </span>
+        </a>
+        <p class="meta"><span id="version">Dernière version</span> · Android 8 et plus · <a href="https://github.com/Glaede2/les-jeux-de-yaya/releases" id="releases">toutes les versions</a></p>
+      </div>
+
+      <div class="hero-device">
+        <div class="tablet tilt">
+          <img src="img/menu.webp" alt="L'écran d'accueil de l'appli : le prénom Yaya et six tuiles de jeux colorées" width="1920" height="1200">
+        </div>
+        <span class="sticker s1">🎨</span>
+        <span class="sticker s2">🧩</span>
+        <span class="sticker s3">🐮</span>
+      </div>
+    </div>
+
+    <svg class="hills" viewBox="0 0 1000 200" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M0 120 Q160 40 330 105 T660 90 T1000 70 V200 H0 Z" fill="#a7e07c" />
+      <path d="M0 160 Q220 95 460 150 T1000 130 V200 H0 Z" fill="#7ccf5a" />
+    </svg>
+  </header>
+
+  <main>
+    <!-- =========================== Les jeux =========================== -->
+    <section class="section games" id="jeux">
+      <h2 class="title">Six jeux, plein de sourires</h2>
+      <p class="lead">Pas de texte à lire, de gros boutons, du son partout, et jamais de « perdu ».</p>
+      <div class="cards">
+        <article class="card reveal" style="--c:#ff8fab">
+          <div class="card-icon">🎨</div>
+          <h3>Coloriage</h3>
+          <p>Le pot de peinture remplit les zones d'un seul doigt, le crayon dessine librement et la gomme répare les bêtises. 18 couleurs.</p>
+        </article>
+        <article class="card reveal" style="--c:#ffb347">
+          <div class="card-icon">🧩</div>
+          <h3>Puzzles</h3>
+          <p>De vraies pièces qui s'aimantent toutes seules, de 8 à 35 pièces, avec le modèle à regarder en cas de besoin.</p>
+        </article>
+        <article class="card reveal" style="--c:#7bd389">
+          <div class="card-icon">🐮</div>
+          <h3>Animaux</h3>
+          <p>24 animaux de la ferme, de la maison, de la savane et de la mer, qui sautent et poussent leur cri.</p>
+        </article>
+        <article class="card reveal" style="--c:#5ec8f2">
+          <div class="card-icon">🧼</div>
+          <h3>Bulles</h3>
+          <p>On éclate, on balaie, on souffle de nouvelles bulles. Mission couleur, bulle géante et pluie d'étoiles.</p>
+        </article>
+        <article class="card reveal" style="--c:#9b8cff">
+          <div class="card-icon">🎹</div>
+          <h3>Piano</h3>
+          <p>Huit touches arc-en-ciel avec leurs petits animaux, des notes qui s'envolent et « Au clair de la lune ».</p>
+        </article>
+        <article class="card reveal" style="--c:#4cc9a0">
+          <div class="card-icon">🃏</div>
+          <h3>Memory</h3>
+          <p>Retrouver les paires, de 2 à 8. Et avec les photos de la famille, c'est encore mieux.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- =========================== Captures =========================== -->
+    <section class="section gallery" id="images">
+      <h2 class="title">Un petit tour dedans</h2>
+      <div class="viewer reveal">
+        <div class="tablet big">
+          <div class="slides" id="slides">
+            <img src="img/coloriage.webp" alt="Le coloriage : une maison colorée, la palette de couleurs et les outils" data-caption="🎨 Le coloriage" width="1920" height="1200">
+            <img src="img/puzzle.webp" alt="Le puzzle : le plateau avec le modèle en transparence et les pièces rangées sur les côtés" data-caption="🧩 Les puzzles" width="1920" height="1200" loading="lazy">
+            <img src="img/animaux.webp" alt="Les animaux de la ferme, la vache dit Meuh" data-caption="🐮 Les animaux" width="1920" height="1200" loading="lazy">
+            <img src="img/bulles.webp" alt="Des bulles de couleur qui montent dans l'eau" data-caption="🧼 Les bulles" width="1920" height="1200" loading="lazy">
+            <img src="img/piano.webp" alt="Le piano aux huit touches de couleur" data-caption="🎹 Le piano" width="1920" height="1200" loading="lazy">
+            <img src="img/memory.webp" alt="Le memory avec des cartes d'animaux" data-caption="🃏 Le memory" width="1920" height="1200" loading="lazy">
+          </div>
+        </div>
+        <button class="nav prev" id="prev" aria-label="Image précédente">◀</button>
+        <button class="nav next" id="next" aria-label="Image suivante">▶</button>
+      </div>
+      <p class="caption" id="caption">🎨 Le coloriage</p>
+      <div class="dots" id="dots"></div>
+    </section>
+
+    <!-- =========================== Pour les parents =========================== -->
+    <section class="section parents" id="parents">
+      <h2 class="title">Pensé pour les parents aussi</h2>
+      <div class="features">
+        <div class="feature reveal"><span>🔒</span><h3>Zéro pub, zéro Internet</h3><p>L'appli ne demande aucune permission et rien ne sort de la tablette.</p></div>
+        <div class="feature reveal"><span>🪶</span><h3>Toute légère</h3><p>Moins de 100 Ko, pensée pour les petites tablettes pas très puissantes.</p></div>
+        <div class="feature reveal"><span>🖼️</span><h3>Tes propres images</h3><p>Ajoute des coloriages, des photos pour les puzzles et le memory, avec leur prénom dit par la voix.</p></div>
+        <div class="feature reveal"><span>🔇</span><h3>Voix désactivable</h3><p>On peut couper le narrateur, la musique et les cris restent.</p></div>
+        <div class="feature reveal"><span>🚪</span><h3>Sortie protégée</h3><p>Pour quitter ou régler, il faut appuyer 3 secondes : pas de sortie par accident.</p></div>
+        <div class="feature reveal"><span>💛</span><h3>Jamais d'échec</h3><p>Pas de chrono, pas de « perdu » : chaque toucher fait quelque chose de joli.</p></div>
+      </div>
+    </section>
+
+    <!-- =========================== Installation =========================== -->
+    <section class="section install" id="installer">
+      <h2 class="title">L'installer en 3 étapes</h2>
+      <ol class="steps">
+        <li class="step reveal" style="--c:#ff5d8f"><b>1</b><h3>Télécharge</h3><p>Ouvre cette page sur la tablette et touche le gros bouton rose.</p></li>
+        <li class="step reveal" style="--c:#ffb703"><b>2</b><h3>Autorise</h3><p>Android demande d'autoriser les « applis inconnues » : accepte pour ton navigateur.</p></li>
+        <li class="step reveal" style="--c:#4cc9a0"><b>3</b><h3>Joue !</h3><p>Ouvre « Les jeux de Yaya ». Pour une mise à jour, réinstalle par-dessus : rien n'est perdu.</p></li>
+      </ol>
+      <a class="candy download small" href="https://github.com/Glaede2/les-jeux-de-yaya/releases/latest/download/LesJeuxDeYaya.apk">
+        <span class="candy-icon">⬇️</span><span><strong>Télécharger</strong></span>
+      </a>
+    </section>
+  </main>
+
+  <!-- =========================== Bas de page =========================== -->
+  <footer class="footer">
+    <div class="parade" aria-hidden="true">
+      <span>🐥</span><span>🐷</span><span>🐮</span><span>🐶</span><span>🐸</span><span>🐘</span>
+    </div>
+    <p>Fait avec 💖 pour Yaya · <a href="https://github.com/Glaede2/les-jeux-de-yaya">le code sur GitHub</a></p>
+  </footer>
+
+  <canvas id="confetti" aria-hidden="true"></canvas>
+  <script src="app.js"></script>
+</body>
+</html>

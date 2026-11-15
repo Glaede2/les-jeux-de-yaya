@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>Les jeux de Yaya</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- Menu principal -->
+  <div id="menu" class="screen">
+    <!-- Décor : soleil, nuages qui passent, collines -->
+    <div class="scene">
+      <div class="sun"></div>
+      <div class="cloud c1"></div>
+      <div class="cloud c2"></div>
+      <div class="cloud c3"></div>
+      <svg class="hills" viewBox="0 0 1000 200" preserveAspectRatio="none">
+        <path d="M0 120 Q160 40 330 105 T660 90 T1000 70 V200 H0 Z" fill="#a7e07c" />
+        <path d="M0 160 Q220 95 460 150 T1000 130 V200 H0 Z" fill="#7ccf5a" />
+      </svg>
+    </div>
+    <!-- Le prénom, une lettre de couleur par lettre (construit dans core.js) -->
+    <h1 id="title"></h1>
+    <div id="tiles"></div>
+    <!-- Réservé aux parents : maintenir 3 secondes -->
+    <div id="gear" class="hold-btn" title="Maintenir 3 secondes : espace parents"><span>⚙️</span><i></i></div>
+    <div id="lock" class="hold-btn" title="Maintenir 3 secondes pour quitter"><span>🔒</span><i></i></div>
+  </div>
+
+  <!-- Écran de jeu -->
+  <div id="game" class="screen hidden">
+    <div id="game-root"></div>
+    <button id="home" class="round-btn" aria-label="Menu">🏠</button>
+  </div>
+
+  <!-- Confettis par-dessus tout -->
+  <canvas id="fx"></canvas>
+
+  <script src="js/core.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/drawings.js"></script>
+  <script src="js/games/coloring.js"></script>
+  <script src="js/games/puzzle.js"></script>
+  <script src="js/games/animals.js"></script>
+  <script src="js/games/bubbles.js"></script>
+  <script src="js/games/piano.js"></script>
+  <script src="js/games/memory.js"></script>
+  <script src="js/admin.js"></script>
+  <script>App.boot();</script>
+</body>
+</html>
