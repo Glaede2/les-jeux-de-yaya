@@ -9,5 +9,5 @@ $vps = 'ubuntu@51.178.139.69'
 ssh $vps 'rm -rf ~/yaya/public.new && mkdir -p ~/yaya/public.new'
 scp -r -q "$root\site\*" "${vps}:~/yaya/public.new/"
 if ($LASTEXITCODE -ne 0) { throw "Envoi scp échoué" }
-ssh $vps 'cd ~/yaya && rm -rf public.old && { [ -d public ] && mv public public.old || true; } && mv public.new public && rm -rf public.old && chmod -R a+rX public'
+ssh $vps 'cd ~/yaya && rm -rf public.old && { [ -d public ] && mv public public.old || true; } && mv public.new public && rm -rf public.old && find public -type d -exec chmod 755 {} + && find public -type f -exec chmod 644 {} +'
 Write-Host "Site en ligne : https://yaya.glaede.fr"
