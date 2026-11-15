@@ -2,7 +2,6 @@
 (function () {
   'use strict';
 
-  var REPO = 'Glaede2/les-jeux-de-yaya';
   var calm = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // ---------------------------------------------------------------- Sons (comme dans l'appli)
@@ -151,16 +150,4 @@
     });
   });
 
-  // ---------------------------------------------------------------- Dernière version (GitHub)
-  fetch('https://api.github.com/repos/' + REPO + '/releases/latest')
-    .then(function (r) { return r.ok ? r.json() : null; })
-    .then(function (rel) {
-      if (!rel || !rel.tag_name) return;
-      var apk = (rel.assets || []).filter(function (a) { return /\.apk$/.test(a.name); })[0];
-      var date = new Date(rel.published_at).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
-      var txt = 'Version ' + rel.tag_name.replace(/^v/, '') + ' du ' + date;
-      if (apk) txt += ' · ' + Math.round(apk.size / 1024) + ' Ko';
-      document.getElementById('version').textContent = txt;
-    })
-    .catch(function () { /* hors ligne : on garde le texte par défaut */ });
 })();
