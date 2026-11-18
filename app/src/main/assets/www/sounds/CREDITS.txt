@@ -1,6 +1,5 @@
 Cris d'animaux : vrais enregistrements venant de Wikimedia Commons, sous licence libre.
 Chaque fichier a été raccourci, normalisé en volume et converti en mp3.
-Les animaux absents de cette liste utilisent un cri synthétisé (voir js/games/animals.js).
 
 vache.mp3 (Vache)
   Fichier : Single Cow Moo.ogg
