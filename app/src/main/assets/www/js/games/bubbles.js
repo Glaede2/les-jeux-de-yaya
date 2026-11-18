@@ -15,6 +15,8 @@
 
   var HUES = ['#ff8fab', '#ffd23f', '#8ac926', '#4cc9f0', '#b388ff', '#ff9f1c'];
   var HUE_NAMES = ['roses', 'jaunes', 'vertes', 'bleues', 'violettes', 'orange'];
+  App.lines(['Waouh, une étoile !']);
+  HUE_NAMES.forEach(function (n) { App.lines(['Les bulles ' + n + ' !', 'Éclate les bulles ' + n + ' !']); });
   var INSIDE = ['🐟', '🐙', '🐢', '🦀', '🐳', '🍓', '🍎', '🍌', '🐞', '🐥', '🦋', '🐸'];
   var SCALE = [523, 587, 659, 698, 784, 880, 988, 1047]; // do ré mi fa sol la si do
   var SPRITE = 128, SHELF = 8, MISSION = 5;

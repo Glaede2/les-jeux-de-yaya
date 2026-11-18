@@ -148,12 +148,14 @@ var Admin = (function () {
       var open = h('button', 'admin-btn', box, '🔧 Réglages de la voix (Android)');
       open.addEventListener('click', function () { bridge.openVoiceSettings(); });
     }
-    var msg = google
-      ? 'La tablette utilise la voix Google : c\'est la plus agréable. Dans les réglages, tu peux choisir ' +
-        'une autre voix française (« Installer les données vocales ») si tu en préfères une.'
-      : (broken ? 'Aucune voix française n\'est prête sur la tablette. ' : 'La voix actuelle de la tablette est assez robotique. ') +
-        'Pour une voix bien plus douce : installe « Services vocaux Google » (Speech Services by Google) depuis ' +
-        'le Play Store, puis dans « Réglages de la voix », choisis-le comme moteur et installe la voix française.';
+    var msg = 'Toutes les phrases des jeux sont enregistrées dans l\'appli avec une voix d\'enfant douce. ' +
+      'Seuls les noms que tu donnes à tes images sont lus par la voix de la tablette. ';
+    if (bridge && !google) {
+      msg += (broken ? 'Aucune voix française n\'est prête sur la tablette : ces noms ne seront pas dits. ' :
+        'Cette voix-là est assez robotique. ') +
+        'Pour l\'améliorer : installe « Services vocaux Google » (Speech Services by Google) depuis le Play Store, ' +
+        'puis dans « Réglages de la voix », choisis-le comme moteur.';
+    }
     h('p', 'admin-help', parent, msg);
   }
 
@@ -178,7 +180,7 @@ var Admin = (function () {
       ['⚙️', 'Pour revenir ici : dans le menu des jeux, garde le doigt appuyé 3 secondes sur ⚙️ (en bas à gauche).'],
       ['🔒', 'Pour quitter l\'appli : garde le doigt appuyé 3 secondes sur 🔒 (en bas à droite).'],
       ['🏠', 'Dans chaque jeu, la maison en haut à gauche ramène au menu.'],
-      ['🔊', 'La voix est trop robotique ? Va dans Réglages : on y explique comment installer une voix plus douce.'],
+      ['🔊', 'Les noms de tes images sont lus par la voix de la tablette : si elle est robotique, va dans Réglages.'],
       ['🟩', 'La difficulté se choisit en haut à droite des jeux : vert = facile, rouge = difficile. ' +
         'L\'appli retient le dernier choix.'],
       ['📌', 'Pour que l\'enfant ne sorte pas de l\'appli par erreur, active l\'épinglage d\'écran ' +

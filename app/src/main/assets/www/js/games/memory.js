@@ -12,6 +12,9 @@
     { e: '🐵', nom: 'le singe' }, { e: '🐼', nom: 'le panda' }, { e: '🐤', nom: 'le poussin' },
     { e: '🦋', nom: 'le papillon' }
   ];
+  App.lines(['Retrouve les paires !']);
+  CARDS.forEach(function (c) { App.lines([c.nom.charAt(0).toUpperCase() + c.nom.slice(1) + ' !']); });
+
   var LEVELS = [
     { pairs: 2, cols: 4, rows: 1 },
     { pairs: 4, cols: 4, rows: 2 },

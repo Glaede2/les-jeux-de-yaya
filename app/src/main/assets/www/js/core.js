@@ -108,9 +108,25 @@ var App = (function () {
   };
 
   // ---------------------------------------------------------------- Voix
-  // Voix du narrateur ; désactivable dans l'espace parents (les sons des jeux restent)
+  // Voix du narrateur ; désactivable dans l'espace parents (les sons des jeux restent).
+  // Les phrases connues sont préenregistrées (voice/*.mp3, liste dans js/voice-index.js,
+  // générées par tools/voices.mjs). Les autres (noms donnés par les parents) passent
+  // par la synthèse vocale de la tablette.
+  var lines = [];
+  function addLines(list) { lines = lines.concat(list); }
+  function allLines() {
+    var seen = {};
+    return lines.filter(function (t) { if (seen[t]) return false; seen[t] = true; return true; });
+  }
+
   function say(text) {
     if (window.Store && !Store.getSetting('voice', true)) return;
+    var file = window.VOICE && VOICE[text];
+    if (file) {
+      if (window.speechSynthesis) speechSynthesis.cancel();
+      sample('voice/' + file + '.mp3', 'voice');
+      return;
+    }
     try {
       if (window.AndroidBridge && window.AndroidBridge.speak) {
         window.AndroidBridge.speak(text);
@@ -235,9 +251,12 @@ var App = (function () {
     }
   }
 
+  var PRAISE = ['Bravo !', 'Super !', 'Génial !', 'Trop fort !', 'Youpi !'];
+  addLines(PRAISE.concat(['Yaya !', 'Coucou Yaya ! On va bien s\'amuser !']));
+
   function celebrate(words) {
     Sfx.success();
-    say(words || pick(['Bravo !', 'Super !', 'Génial !', 'Trop fort !', 'Youpi !']));
+    say(words || pick(PRAISE));
     confetti(90);
   }
 
@@ -445,7 +464,7 @@ var App = (function () {
   return {
     register: register, boot: boot, back: back, pause: pause, resume: resume,
     games: function () { return games.slice(); }, refreshMenu: renderTiles,
-    Sfx: Sfx, say: say, celebrate: celebrate, confetti: confetti,
+    Sfx: Sfx, say: say, celebrate: celebrate, confetti: confetti, lines: addLines, allLines: allLines,
     h: h, pick: pick, rand: rand, shuffle: shuffle,
     fitCanvas: fitCanvas, localPos: localPos, bounce: bounce, levelPicker: levelPicker
   };

@@ -175,6 +175,12 @@
     }
   ];
 
+  App.lines(['Touche un animal !']);
+  PAGES.forEach(function (p) {
+    App.lines([p.nom]);
+    p.list.forEach(function (an) { App.lines(["C'est " + an.nom + ' !']); });
+  });
+
   // ------------------------------------------------------------ Synthétiseur
   var noiseBuf = null, bus = null;
 

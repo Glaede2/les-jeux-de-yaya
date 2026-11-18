@@ -38,6 +38,14 @@
 
   function word(n, thing) { return (thing.f ? MOTS_F : MOTS)[n]; }
   function phrase(n, thing) { return word(n, thing) + ' ' + (n > 1 ? thing.des : thing.un); }
+  function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+  function question(thing) { return 'Combien ' + (/^[aeéiouy]/.test(thing.des) ? "d'" : 'de ') + thing.des + ' ?'; }
+
+  App.lines(MOTS.slice(1).concat(['une', 'Comptons ensemble !', 'Oui ! Bravo !']));
+  THINGS.forEach(function (t) {
+    App.lines([question(t)]);
+    for (var k = 1; k <= 10; k++) App.lines([cap(phrase(k, t)) + ' !']);
+  });
 
   App.register({
     id: 'count',
@@ -126,7 +134,7 @@
           b.addEventListener('pointerdown', function () { choose(b, k); });
         });
 
-        later(function () { App.say('Combien ' + (/^[aeéiouy]/.test(thing.des) ? "d'" : 'de ') + thing.des + ' ?'); }, 300);
+        later(function () { App.say(question(thing)); }, 300);
       }
 
       // Toucher un objet : il saute, reçoit son numéro, la voix compte
@@ -142,7 +150,7 @@
         App.Sfx.note(392 * Math.pow(2, (counted - 1) / 7));
         App.say(word(counted, thing));
         if (counted === n) {
-          later(function () { App.say(phrase(n, thing) + ' !'); }, 700);
+          later(function () { App.say(cap(phrase(n, thing)) + ' !'); }, 700);
         }
       }
 
@@ -168,7 +176,7 @@
           }, 300 + i * 750);
         });
         later(function () {
-          App.say(phrase(n, thing) + ' !');
+          App.say(cap(phrase(n, thing)) + ' !');
           busy = false;
           if (then) then();
         }, 300 + n * 750 + 200);
@@ -186,7 +194,7 @@
           });
           App.Sfx.success();
           App.confetti(70);
-          App.say('Oui ! ' + phrase(n, thing) + ' ! Bravo !');
+          App.say('Oui ! Bravo !');
           later(newRound, 3600);
         } else {
           card.classList.remove('wiggle');

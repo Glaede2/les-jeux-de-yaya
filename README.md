@@ -1,7 +1,7 @@
 # Les jeux de Yaya
 
 Une appli Android de petits jeux pour une enfant de 3 ans : coloriage, puzzles, cris des animaux, bulles, piano, memory, compter et ombres.
-L'APK pèse environ 400 Ko (dont les vrais cris d'animaux). L'appli marche hors ligne et ne demande aucune permission : pas d'Internet, pas de pubs.
+L'APK pèse environ 2 Mo (dont la voix préenregistrée et les vrais cris d'animaux). L'appli marche hors ligne et ne demande aucune permission : pas d'Internet, pas de pubs.
 
 ## Installer sur la tablette
 
@@ -30,7 +30,7 @@ Le fichier à installer est **`LesJeuxDeYaya.apk`**, à la racine de ce dossier.
 - **Espace parents** : maintenir le petit **⚙️** en bas à gauche du menu pendant 3 secondes (voir plus bas). Un appui trop court affiche une bulle qui rappelle quoi faire.
 - Pour qu'elle ne puisse pas sortir du tout : *Paramètres → Sécurité → Épinglage d'application*.
 - L'écran ne se met pas en veille tant que l'appli est ouverte.
-- La voix (« Meuh ! C'est la vache ! ») utilise la synthèse vocale de la tablette. Si rien ne parle, vérifie dans *Paramètres → Langue → Synthèse vocale* que le français est installé.
+- La voix du narrateur est une voix d'enfant préenregistrée dans l'appli. Seuls les noms donnés aux images ajoutées sont lus par la synthèse vocale de la tablette.
 
 | Jeu | Contenu |
 |---|---|
@@ -73,6 +73,7 @@ www/
   js/admin.js         espace parents
   js/drawings.js      les dessins (coloriage + puzzles)
   js/games/*.js       un fichier par jeu
+  voice/              phrases du narrateur préenregistrées (node tools/voices.mjs)
   sounds/             cris d'animaux (mp3) et CREDITS.txt (auteurs et licences)
 ```
 

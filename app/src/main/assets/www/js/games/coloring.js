@@ -48,6 +48,8 @@
     return pages;
   }
 
+  App.lines(['Coloriage ! Choisis une couleur.', 'Dessin libre'].concat(Drawings.pages.map(function (d) { return d.name; })));
+
   App.register({
     id: 'coloring',
     name: 'Coloriage',

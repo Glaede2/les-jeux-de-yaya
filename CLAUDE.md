@@ -8,6 +8,7 @@ Jeux en HTML/JS dans une WebView (`app/src/main/assets/www/`), coquille Java min
 - WebView d'Android 12 : éviter les API JS/CSS trop récentes (pas de `roundRect`, `:has`, `Array.at`…), et les emojis plus récents qu'Emoji 13.1.
 - L'enfant ne lit pas : aucun chiffre ni texte nécessaire pour jouer, jamais d'échec ni de chrono.
 - Cris d'animaux : vrais enregistrements en mp3 courts dans `www/sounds/`, uniquement sous licence libre (domaine public, CC0, CC BY, CC BY-SA), chacun crédité dans `www/sounds/CREDITS.txt`. Sans enregistrement, `animals.js` retombe sur un cri synthétisé.
+- Voix du narrateur : chaque phrase dite par `App.say` doit être déclarée avec `App.lines([...])` dans son jeu, puis préenregistrée avec `node tools/voices.mjs` (serveur lancé ; voix d'enfant fr-FR-EloiseNeural via edge-tts ; ffmpeg via la variable FFMPEG, ici `C:\Program Files\Lian-Li\L-Connect 3\x64\ffmpeg.exe`). Une phrase non enregistrée passe par la voix robotique de la tablette.
 - Tester dans le navigateur (`node tools/serve.js` puis http://localhost:8123, `#puzzle` ouvre un jeu directement) avant de compiler.
 
 ## Publier une nouvelle version (à faire à chaque changement de l'appli)

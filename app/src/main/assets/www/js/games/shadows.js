@@ -49,6 +49,8 @@
 
   function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
 
+  App.lines(['À qui sont ces ombres ?'].concat(THINGS.map(function (t) { return cap(t.nom) + ' !'; })));
+
   App.register({
     id: 'shadows',
     name: 'Ombres',

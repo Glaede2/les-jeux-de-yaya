@@ -58,6 +58,8 @@
     return p;
   }
 
+  Drawings.pages.forEach(function (d) { App.lines([d.name, 'Bravo ! ' + d.name + ' !']); });
+
   App.register({
     id: 'puzzle',
     name: 'Puzzles',
