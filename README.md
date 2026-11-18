@@ -36,7 +36,7 @@ Le fichier à installer est **`LesJeuxDeYaya.apk`**, à la racine de ce dossier.
 |---|---|
 | 🎨 Coloriage | 6 dessins + une page blanche. 18 couleurs. 🪣 remplit une zone, ✏️ dessine au doigt, 🧽 gomme, 🗑️ efface tout (il faut appuyer 2 fois), 🖼️ passe au dessin suivant. |
 | 🧩 Puzzles | Vraies pièces de puzzle, en 8, 16, 24 ou 35 pièces. Chaque bouton de difficulté montre une petite grille de pièces, du vert (facile) au rouge (dur). Le choix est mémorisé. Les pièces s'aimantent quand elles arrivent près de leur place. 👁️ montre le modèle 2 secondes, 🖼️ passe à l'image suivante. |
-| 🐮 Animaux | 9 animaux sur 2 pages (la ferme, les animaux sauvages). On touche : l'animal saute, pousse son vrai cri (enregistrements libres, voir `sounds/CREDITS.txt`), puis la voix dit son nom. Uniquement de vrais cris : un animal sans enregistrement n'est pas dans le jeu. |
+| 🐮 Animaux | 34 animaux sur 7 pages (ferme, basse-cour et maison, jardin, forêt, savane, jungle, mer et banquise). On touche : l'animal saute, pousse son vrai cri (enregistrements libres, voir `sounds/CREDITS.txt`), puis la voix dit son nom. Uniquement de vrais cris : un animal sans enregistrement n'est pas dans le jeu. |
 | 🧼 Bulles | On éclate les bulles au doigt ou en balayant ; éclater vite joue une mélodie. Toucher le vide souffle des bulles. Mission couleur (« les bulles bleues ! », 5 à éclater), amis cachés qui remplissent l'étagère du bas, bulle géante à toucher 3 fois, bulle étoile dorée qui fait pleuvoir des étoiles. |
 | 🎹 Piano | 8 touches de couleur, on peut glisser le doigt dessus. ▶️ joue « Au clair de la lune ». |
 | 🃏 Memory | 2, 4, 6 ou 8 paires, au choix avec les boutons en haut (petites grilles du vert au rouge, choix mémorisé). Les cartes se montrent au début de chaque partie. |

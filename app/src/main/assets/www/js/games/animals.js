@@ -15,20 +15,75 @@
       bg: 'linear-gradient(#bdefff 0%, #bdefff 55%, #9be15d 55%)',
       list: [
         { e: '🐮', cri: 'Meuh !', nom: 'la vache', snd: 'vache' },
+        { e: '🐷', cri: 'Groin groin !', nom: 'le cochon', snd: 'cochon' },
         { e: '🐑', cri: 'Bêêê !', nom: 'le mouton', snd: 'mouton' },
-        { e: '🐔', cri: 'Cot cot codet !', nom: 'la poule', snd: 'poule' },
-        { e: '🐶', cri: 'Ouaf ouaf !', nom: 'le chien', snd: 'chien' },
-        { e: '🐱', cri: 'Miaou !', nom: 'le chat', snd: 'chat' },
-        { e: '🐸', cri: 'Croâ croâ !', nom: 'la grenouille', snd: 'grenouille' }
+        { e: '🐐', cri: 'Mêêê !', nom: 'la chèvre', snd: 'chevre' },
+        { e: '🐴', cri: 'Hiii hiii !', nom: 'le cheval', snd: 'cheval' },
+        { e: '🦃', cri: 'Glouglou !', nom: 'le dindon', snd: 'dindon' }
       ]
     },
     {
-      nom: 'Les animaux sauvages',
+      nom: 'La basse-cour et la maison',
+      bg: 'linear-gradient(#ffe5ec 0%, #ffe5ec 55%, #c7f9cc 55%)',
+      list: [
+        { e: '🐔', cri: 'Cot cot codet !', nom: 'la poule', snd: 'poule' },
+        { e: '🐓', cri: 'Cocorico !', nom: 'le coq', snd: 'coq' },
+        { e: '🐤', cri: 'Piou piou !', nom: 'le poussin', snd: 'poussin' },
+        { e: '🦆', cri: 'Coin coin !', nom: 'le canard', snd: 'canard' },
+        { e: '🐶', cri: 'Ouaf ouaf !', nom: 'le chien', snd: 'chien' },
+        { e: '🐱', cri: 'Miaou !', nom: 'le chat', snd: 'chat' }
+      ]
+    },
+    {
+      nom: 'Le jardin',
+      bg: 'linear-gradient(#fff3c4 0%, #fff3c4 55%, #b5e48c 55%)',
+      list: [
+        { e: '🐦', cri: 'Cui-cui !', nom: "l'oiseau", snd: 'oiseau' },
+        { e: '🐝', cri: 'Bzzz !', nom: "l'abeille", snd: 'abeille' },
+        { e: '🦗', cri: 'Cri-cri !', nom: 'le grillon', snd: 'grillon' },
+        { e: '🐸', cri: 'Croâ croâ !', nom: 'la grenouille', snd: 'grenouille' },
+        { e: '🐭', cri: 'Couic couic !', nom: 'la souris', snd: 'souris' }
+      ]
+    },
+    {
+      nom: 'La forêt',
+      bg: 'linear-gradient(#b8e0d2 0%, #b8e0d2 55%, #74c69d 55%)',
+      list: [
+        { e: '🐺', cri: 'Aouuuh !', nom: 'le loup', snd: 'loup' },
+        { e: '🐻', cri: 'Grrr !', nom: "l'ours", snd: 'ours' },
+        { e: '🦌', cri: 'Bôôôh !', nom: 'le cerf', snd: 'cerf' },
+        { e: '🦊', cri: 'Kaïïï !', nom: 'le renard', snd: 'renard' },
+        { e: '🦉', cri: 'Hou hou !', nom: 'le hibou', snd: 'hibou' }
+      ]
+    },
+    {
+      nom: 'La savane',
       bg: 'linear-gradient(#ffd9a0 0%, #ffe8a3 55%, #e9c46a 55%)',
       list: [
         { e: '🦁', cri: 'Groaaar !', nom: 'le lion', snd: 'lion' },
         { e: '🐘', cri: 'Pouuuuh !', nom: "l'éléphant", snd: 'elephant' },
-        { e: '🐺', cri: 'Aouuuh !', nom: 'le loup', snd: 'loup' }
+        { e: '🦛', cri: 'Hon hon !', nom: "l'hippopotame", snd: 'hippo' },
+        { e: '🐫', cri: 'Blôôô !', nom: 'le chameau', snd: 'chameau' }
+      ]
+    },
+    {
+      nom: 'La jungle',
+      bg: 'linear-gradient(#caffbf 0%, #caffbf 55%, #52b788 55%)',
+      list: [
+        { e: '🐯', cri: 'Grrraou !', nom: 'le tigre', snd: 'tigre' },
+        { e: '🐵', cri: 'Hou hou ha ha !', nom: 'le singe', snd: 'singe' },
+        { e: '🦍', cri: 'Grooaar !', nom: 'le gorille', snd: 'gorille' },
+        { e: '🦜', cri: 'Crôa crôa !', nom: 'le perroquet', snd: 'perroquet' }
+      ]
+    },
+    {
+      nom: 'La mer et la banquise',
+      bg: 'linear-gradient(#dff6ff 0%, #dff6ff 55%, #7ec4cf 55%)',
+      list: [
+        { e: '🐬', cri: 'Hiii clic clic !', nom: 'le dauphin', snd: 'dauphin' },
+        { e: '🐳', cri: 'Ouuuuh !', nom: 'la baleine', snd: 'baleine' },
+        { e: '🦭', cri: 'Ar ar ar !', nom: 'le phoque', snd: 'phoque' },
+        { e: '🐧', cri: 'Couac couac !', nom: 'le pingouin', snd: 'manchot' }
       ]
     }
   ];
@@ -82,6 +137,7 @@
         if (!quiet) App.say(page.nom);
         preload(page.list.map(function (an) { return an.snd; }));
         grid.innerHTML = '';
+        grid.style.gridTemplateColumns = 'repeat(' + (page.list.length === 4 ? 2 : 3) + ', 1fr)';
         page.list.forEach(function (an) {
           var b = h('button', 'animal', grid, an.e);
           b.addEventListener('pointerdown', function () {
