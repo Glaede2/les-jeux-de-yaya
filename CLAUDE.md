@@ -7,6 +7,7 @@ Jeux en HTML/JS dans une WebView (`app/src/main/assets/www/`), coquille Java min
 - Tout reste léger : pas de framework, pas de dépendance npm/Gradle en plus, sprites pré-dessinés, pas de boucle d'animation inutile.
 - WebView d'Android 12 : éviter les API JS/CSS trop récentes (pas de `roundRect`, `:has`, `Array.at`…), et les emojis plus récents qu'Emoji 13.1.
 - L'enfant ne lit pas : aucun chiffre ni texte nécessaire pour jouer, jamais d'échec ni de chrono.
+- Cris d'animaux : vrais enregistrements en mp3 courts dans `www/sounds/`, uniquement sous licence libre (domaine public, CC0, CC BY, CC BY-SA), chacun crédité dans `www/sounds/CREDITS.txt`. Sans enregistrement, `animals.js` retombe sur un cri synthétisé.
 - Tester dans le navigateur (`node tools/serve.js` puis http://localhost:8123, `#puzzle` ouvre un jeu directement) avant de compiler.
 
 ## Publier une nouvelle version (à faire à chaque changement de l'appli)

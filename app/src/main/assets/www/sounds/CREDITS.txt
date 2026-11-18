@@ -1,0 +1,57 @@
+Cris d'animaux : vrais enregistrements venant de Wikimedia Commons, sous licence libre.
+Chaque fichier a été raccourci, normalisé en volume et converti en mp3.
+Les animaux absents de cette liste utilisent un cri synthétisé (voir js/games/animals.js).
+
+vache.mp3 (Vache)
+  Fichier : Single Cow Moo.ogg
+  Auteur  : MichaeltheFox8621
+  Licence : CC BY-SA 4.0
+  Source  : https://commons.wikimedia.org/wiki/File:Single_Cow_Moo.ogg
+
+mouton.mp3 (Mouton)
+  Fichier : Sheep bleating.ogg
+  Auteur  : earthcalling
+  Licence : Public domain
+  Source  : https://commons.wikimedia.org/wiki/File:Sheep_bleating.ogg
+
+poule.mp3 (Poule)
+  Fichier : Hen announcing shes lain an egg.ogg
+  Auteur  : alys
+  Licence : Public domain
+  Source  : https://commons.wikimedia.org/wiki/File:Hen_announcing_shes_lain_an_egg.ogg
+
+chien.mp3 (Chien)
+  Fichier : Barking of a dog.ogg
+  Auteur  : Amada44
+  Licence : CC BY-SA 3.0
+  Source  : https://commons.wikimedia.org/wiki/File:Barking_of_a_dog.ogg
+
+chat.mp3 (Chat)
+  Fichier : Meow of a Siamese cat - freemaster2.wav
+  Auteur  : freemaster2
+  Licence : CC0
+  Source  : https://commons.wikimedia.org/wiki/File:Meow_of_a_Siamese_cat_-_freemaster2.wav
+
+lion.mp3 (Lion)
+  Fichier : Lion raring-sound1TamilNadu178.ogg
+  Auteur  : த*உழவன்
+  Licence : Public domain
+  Source  : https://commons.wikimedia.org/wiki/File:Lion_raring-sound1TamilNadu178.ogg
+
+elephant.mp3 (Éléphant)
+  Fichier : Elephant voice - trumpeting.ogg
+  Auteur  : தகவலுழவன்
+  Licence : CC0
+  Source  : https://commons.wikimedia.org/wiki/File:Elephant_voice_-_trumpeting.ogg
+
+grenouille.mp3 (Grenouille)
+  Fichier : Single Frog Croak.oga
+  Auteur  : MichaeltheFox8621
+  Licence : CC BY-SA 4.0
+  Source  : https://commons.wikimedia.org/wiki/File:Single_Frog_Croak.oga
+
+loup.mp3 (Loup)
+  Fichier : Wolf howls.ogg
+  Auteur  : inconnu
+  Licence : Public domain
+  Source  : https://commons.wikimedia.org/wiki/File:Wolf_howls.ogg

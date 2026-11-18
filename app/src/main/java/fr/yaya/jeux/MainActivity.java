@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
+import android.speech.tts.Voice;
 import android.view.View;
 import android.view.WindowInsets;
 import android.view.WindowInsetsController;
@@ -25,6 +26,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Locale;
+import java.util.Set;
 
 /**
  * Une seule activité : une WebView plein écran qui affiche les jeux
@@ -48,6 +50,7 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
         if (path.endsWith(".png")) return "image/png";
         if (path.endsWith(".svg")) return "image/svg+xml";
         if (path.endsWith(".woff2")) return "font/woff2";
+        if (path.endsWith(".mp3")) return "audio/mpeg";
         return "application/octet-stream";
     }
 
@@ -136,9 +139,34 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
         if (status != TextToSpeech.SUCCESS) return;
         int r = tts.setLanguage(Locale.FRANCE);
         if (r < 0) r = tts.setLanguage(Locale.FRENCH);
-        tts.setSpeechRate(0.9f);
-        tts.setPitch(1.15f);
+        pickBestVoice();
+        // Un peu plus aigu et posé : plus doux pour une petite oreille
+        tts.setSpeechRate(0.92f);
+        tts.setPitch(1.2f);
         ttsReady = r >= 0;
+    }
+
+    /** Choisit la plus jolie voix française installée sur la tablette (hors ligne de préférence). */
+    private void pickBestVoice() {
+        try {
+            Set<Voice> voices = tts.getVoices();
+            if (voices == null) return;
+            Voice best = null;
+            int bestScore = Integer.MIN_VALUE;
+            for (Voice v : voices) {
+                Locale l = v.getLocale();
+                if (l == null || !"fra".equals(l.getISO3Language())) continue;
+                Set<String> f = v.getFeatures();
+                if (f != null && f.contains(TextToSpeech.Engine.KEY_FEATURE_NOT_INSTALLED)) continue;
+                int score = v.getQuality() * 10 - v.getLatency();
+                if ("FR".equals(l.getCountry())) score += 50;
+                if (v.isNetworkConnectionRequired()) score -= 300; // la tablette n'a pas toujours Internet
+                if (score > bestScore) { bestScore = score; best = v; }
+            }
+            if (best != null) tts.setVoice(best);
+        } catch (RuntimeException e) {
+            // certains moteurs ne gèrent pas les voix : on garde la voix par défaut
+        }
     }
 
     /** Fonctions appelables depuis le JavaScript (window.AndroidBridge). */
@@ -146,6 +174,29 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
         @JavascriptInterface
         public void speak(String text) {
             if (ttsReady) tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, "yaya");
+        }
+
+        /** Moteur de synthèse vocale utilisé (pour conseiller les parents). */
+        @JavascriptInterface
+        public String voiceEngine() {
+            try {
+                String e = tts.getDefaultEngine();
+                return (ttsReady ? "" : "!") + (e == null ? "" : e);
+            } catch (RuntimeException ex) {
+                return "!";
+            }
+        }
+
+        /** Ouvre les réglages Android de la synthèse vocale. */
+        @JavascriptInterface
+        public void openVoiceSettings() {
+            runOnUiThread(() -> {
+                try {
+                    startActivity(new Intent("com.android.settings.TTS_SETTINGS"));
+                } catch (ActivityNotFoundException e) {
+                    startActivity(new Intent(android.provider.Settings.ACTION_SETTINGS));
+                }
+            });
         }
 
         @JavascriptInterface

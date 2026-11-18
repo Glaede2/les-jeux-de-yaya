@@ -61,7 +61,23 @@ const SHOTS = [
         await __wait(160);
       }`
   },
-  { name: 'memory', hash: 'memory', wait: 900, before: `localStorage.setItem('yaya.memory.level', '1');` }
+  { name: 'memory', hash: 'memory', wait: 900, before: `localStorage.setItem('yaya.memory.level', '1');` },
+  {
+    name: 'compter', hash: 'count', wait: 1200, before: `localStorage.setItem('yaya.count.level', '1');`, script: `
+      const items = document.querySelectorAll('.count-item');
+      for (let i = 0; i < Math.max(0, items.length - 1); i++) {
+        items[i].dispatchEvent(new PointerEvent('pointerdown', { bubbles: true }));
+        await new Promise((r) => setTimeout(r, 150));
+      }
+    `
+  },
+  {
+    name: 'ombres', hash: 'shadows', wait: 1200, before: `localStorage.setItem('yaya.shadows.level', '1');`, script: `
+      const p = document.querySelector('.sh-piece');
+      p.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, pointerId: 1, clientX: 0, clientY: 0 }));
+      window.dispatchEvent(new PointerEvent('pointerup', { bubbles: true, pointerId: 1, clientX: 0, clientY: 0 }));
+    `
+  }
 ];
 
 async function main() {

@@ -1,6 +1,6 @@
 /*
  * Les jeux de Yaya — noyau commun.
- * Navigation menu <-> jeux, sons synthétisés (aucun fichier audio),
+ * Navigation menu <-> jeux, petits sons synthétisés, sons enregistrés (cris des animaux),
  * voix (synthèse vocale Android), confettis, utilitaires canvas.
  *
  * Chaque jeu s'enregistre avec App.register({ id, name, icon, color, start(kit) }).
@@ -41,8 +41,47 @@ var App = (function () {
     osc.stop(t + dur + 0.05);
   }
 
+  // Sons enregistrés (fichiers dans sounds/) : décodés une seule fois puis gardés en mémoire
+  var buffers = {}, channels = {};
+  function loadSample(url) {
+    if (!buffers[url]) {
+      buffers[url] = fetch(url)
+        .then(function (r) { if (!r.ok) throw new Error(url); return r.arrayBuffer(); })
+        .then(function (data) {
+          return new Promise(function (ok, ko) { audio().decodeAudioData(data, ok, ko); });
+        });
+      buffers[url].catch(function () { delete buffers[url]; });
+    }
+    return buffers[url];
+  }
+
+  // Joue un son enregistré. Sur un même canal, le son précédent s'arrête en douceur.
+  // Renvoie une promesse de la durée du son (s).
+  function sample(url, channel) {
+    var a = audio();
+    if (!a) return Promise.resolve(0);
+    return loadSample(url).then(function (buf) {
+      var now = a.currentTime;
+      var old = channel && channels[channel];
+      if (old) {
+        old.gain.setValueAtTime(old.gain.value, now);
+        old.gain.linearRampToValueAtTime(0, now + 0.08);
+      }
+      var g = a.createGain();
+      g.connect(a.destination);
+      var src = a.createBufferSource();
+      src.buffer = buf;
+      src.connect(g);
+      src.start(now + 0.01);
+      if (channel) channels[channel] = g;
+      return buf.duration;
+    }, function () { return 0; });
+  }
+
   var Sfx = {
     ctx: audio, // contexte audio, pour les jeux qui fabriquent leurs propres sons
+    sample: sample,
+    preload: function (url) { if (audio()) loadSample(url); },
     tone: tone,
     tap: function () { tone(660, 0.08, { type: 'triangle', vol: 0.2 }); },
     pop: function (p) { p = p || 1; tone(420 * p, 0.12, { slide: 1300 * p, vol: 0.35 }); },
@@ -300,15 +339,28 @@ var App = (function () {
     });
   }
 
+  // Les parents peuvent masquer des jeux (espace parents > Réglages)
+  function isShown(def) { return !window.Store || Store.getSetting('game.' + def.id, true); }
+
   function buildMenu() {
     buildTitle();
+    renderTiles();
+  }
+
+  function renderTiles() {
     var tiles = document.getElementById('tiles');
-    games.forEach(function (def, i) {
+    tiles.innerHTML = '';
+    var shown = games.filter(isShown);
+    if (!shown.length) shown = games; // jamais de menu vide
+    var cols = shown.length <= 3 ? shown.length : shown.length <= 6 ? 3 : 4;
+    tiles.style.gridTemplateColumns = 'repeat(' + cols + ', 1fr)';
+    tiles.className = shown.length > 8 ? 'small' : '';
+    shown.forEach(function (def, i) {
       var t = h('button', 'tile', tiles);
       t.style.setProperty('--i', i);
       var body = h('div', 'tile-body', t);
       body.style.setProperty('--c', def.color);
-      h('div', 'icon', h('div', 'icon-wrap', body), def.icon);
+      h('div', 'icon' + (def.iconClass ? ' ' + def.iconClass : ''), h('div', 'icon-wrap', body), def.icon);
       h('div', 'label', body, def.name);
       t.addEventListener('pointerdown', function () {
         Sfx.tap();
@@ -318,19 +370,35 @@ var App = (function () {
     });
   }
 
-  // Boutons réservés aux parents : il faut les maintenir 3 secondes
-  function holdButton(el, fn) {
-    var timer = 0;
+  // Petite bulle d'explication pour les parents (l'enfant, lui, ne lit pas)
+  var tipEl = null, tipTimer = 0;
+  function tip(text, side) {
+    if (!tipEl) tipEl = h('div', 'parent-tip', document.getElementById('menu'));
+    tipEl.textContent = text;
+    tipEl.className = 'parent-tip show ' + side;
+    clearTimeout(tipTimer);
+    tipTimer = setTimeout(function () { tipEl.classList.remove('show'); }, 3500);
+  }
+
+  // Boutons réservés aux parents : il faut les maintenir 3 secondes.
+  // Un appui trop court affiche une bulle qui explique quoi faire.
+  function holdButton(el, fn, hint, side) {
+    var timer = 0, t0 = 0;
     function cancel() {
       clearTimeout(timer);
       el.classList.remove('holding');
     }
     el.addEventListener('pointerdown', function (e) {
       e.preventDefault();
+      t0 = Date.now();
       el.classList.add('holding');
-      timer = setTimeout(function () { cancel(); fn(); }, 3000);
+      timer = setTimeout(function () { t0 = 0; cancel(); fn(); }, 3000);
     });
-    el.addEventListener('pointerup', cancel);
+    el.addEventListener('pointerup', function () {
+      if (t0 && Date.now() - t0 < 2900) tip(hint, side);
+      t0 = 0;
+      cancel();
+    });
     el.addEventListener('pointerleave', cancel);
     el.addEventListener('pointercancel', cancel);
   }
@@ -339,8 +407,9 @@ var App = (function () {
     holdButton(document.getElementById('lock'), function () {
       if (window.AndroidBridge && window.AndroidBridge.exit) window.AndroidBridge.exit();
       else alert('Sortie (sur la tablette, l\'appli se ferme ici)');
-    });
-    holdButton(document.getElementById('gear'), function () { Admin.open(); });
+    }, 'Pour quitter l\'appli : garde le doigt appuyé sur 🔒 pendant 3 secondes.', 'right');
+    holdButton(document.getElementById('gear'), function () { Admin.open(); },
+      'Espace parents : garde le doigt appuyé sur ⚙️ pendant 3 secondes.', 'left');
   }
 
   function boot() {
@@ -375,6 +444,7 @@ var App = (function () {
 
   return {
     register: register, boot: boot, back: back, pause: pause, resume: resume,
+    games: function () { return games.slice(); }, refreshMenu: renderTiles,
     Sfx: Sfx, say: say, celebrate: celebrate, confetti: confetti,
     h: h, pick: pick, rand: rand, shuffle: shuffle,
     fitCanvas: fitCanvas, localPos: localPos, bounce: bounce, levelPicker: levelPicker

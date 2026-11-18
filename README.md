@@ -1,7 +1,7 @@
 # Les jeux de Yaya
 
-Une appli Android de 6 jeux pour une enfant de 3 ans : coloriage, puzzles, cris des animaux, bulles, piano et memory.
-L'APK pèse environ 45 Ko. L'appli marche hors ligne et ne demande aucune permission : pas d'Internet, pas de pubs.
+Une appli Android de petits jeux pour une enfant de 3 ans : coloriage, puzzles, cris des animaux, bulles, piano, memory, compter et ombres.
+L'APK pèse environ 400 Ko (dont les vrais cris d'animaux). L'appli marche hors ligne et ne demande aucune permission : pas d'Internet, pas de pubs.
 
 ## Installer sur la tablette
 
@@ -24,10 +24,10 @@ Le fichier à installer est **`LesJeuxDeYaya.apk`**, à la racine de ce dossier.
 
 ## Comment ça marche pour l'enfant
 
-- **Menu** : 6 grosses tuiles. On touche une tuile pour lancer le jeu.
+- **Menu** : une grosse tuile par jeu. On touche une tuile pour lancer le jeu.
 - **🏠** en haut à gauche : retour au menu. Le bouton retour d'Android fait la même chose.
 - **Quitter l'appli** : maintenir le petit **🔒** en bas à droite du menu pendant 3 secondes. C'est réservé aux parents, le bouton retour ne fait pas sortir de l'appli.
-- **Espace parents** : maintenir le petit **⚙️** en bas à gauche du menu pendant 3 secondes (voir plus bas).
+- **Espace parents** : maintenir le petit **⚙️** en bas à gauche du menu pendant 3 secondes (voir plus bas). Un appui trop court affiche une bulle qui rappelle quoi faire.
 - Pour qu'elle ne puisse pas sortir du tout : *Paramètres → Sécurité → Épinglage d'application*.
 - L'écran ne se met pas en veille tant que l'appli est ouverte.
 - La voix (« Meuh ! C'est la vache ! ») utilise la synthèse vocale de la tablette. Si rien ne parle, vérifie dans *Paramètres → Langue → Synthèse vocale* que le français est installé.
@@ -36,20 +36,22 @@ Le fichier à installer est **`LesJeuxDeYaya.apk`**, à la racine de ce dossier.
 |---|---|
 | 🎨 Coloriage | 6 dessins + une page blanche. 18 couleurs. 🪣 remplit une zone, ✏️ dessine au doigt, 🧽 gomme, 🗑️ efface tout (il faut appuyer 2 fois), 🖼️ passe au dessin suivant. |
 | 🧩 Puzzles | Vraies pièces de puzzle, en 8, 16, 24 ou 35 pièces. Chaque bouton de difficulté montre une petite grille de pièces, du vert (facile) au rouge (dur). Le choix est mémorisé. Les pièces s'aimantent quand elles arrivent près de leur place. 👁️ montre le modèle 2 secondes, 🖼️ passe à l'image suivante. |
-| 🐮 Animaux | 24 animaux sur 4 pages (ferme, maison et jardin, savane et jungle, forêt et mer). On touche : l'animal saute, pousse son cri (synthétisé en direct, sans fichier son), puis la voix dit son nom. |
+| 🐮 Animaux | 24 animaux sur 4 pages (ferme, maison et jardin, savane et jungle, forêt et mer). On touche : l'animal saute, pousse son cri (vrais enregistrements libres pour 9 animaux, voir `sounds/CREDITS.txt` ; cri synthétisé pour les autres), puis la voix dit son nom. |
 | 🧼 Bulles | On éclate les bulles au doigt ou en balayant ; éclater vite joue une mélodie. Toucher le vide souffle des bulles. Mission couleur (« les bulles bleues ! », 5 à éclater), amis cachés qui remplissent l'étagère du bas, bulle géante à toucher 3 fois, bulle étoile dorée qui fait pleuvoir des étoiles. |
 | 🎹 Piano | 8 touches de couleur, on peut glisser le doigt dessus. ▶️ joue « Au clair de la lune ». |
 | 🃏 Memory | 2, 4, 6 ou 8 paires, au choix avec les boutons en haut (petites grilles du vert au rouge, choix mémorisé). Les cartes se montrent au début de chaque partie. |
+| 🔢 Compter | Des objets apparaissent (pommes, canards…). On les touche un par un et la voix compte. Puis on choisit le bon chiffre parmi 3 cartes (chaque carte montre le chiffre et autant de points). Une mauvaise carte : la voix recompte avec l'enfant. Jusqu'à 3, 5 ou 10. |
+| 🦒 Ombres | Glisser chaque animal ou objet sur son ombre (ou le toucher, puis toucher l'ombre). Il reprend ses couleurs et les animaux poussent leur cri. 2, 3 ou 4 ombres. |
 
 ## Espace parents : ajouter ses propres images
 
-Pour y entrer, maintiens **⚙️** 3 secondes dans le menu. Il y a un onglet par jeu :
+Pour y entrer, maintiens **⚙️** 3 secondes dans le menu. L'onglet **🏠 Accueil** explique chaque partie et les gestes à connaître. Il y a ensuite un onglet par jeu, chacun avec un mode d'emploi en 4 étapes :
 
 - **🎨 Coloriages** : ajoute une page de coloriage (scan, photo bien nette, image trouvée en ligne). L'appli ne garde que les traits sombres. Règle la **sensibilité** pour que les traits soient bien continus, car une zone mal fermée se remplira avec sa voisine.
 - **🧩 Puzzles** : ajoute n'importe quelle photo ou image. Les photos en hauteur marchent aussi.
 - **🃏 Memory** : chaque photo devient une paire de cartes. Avec au moins 4 photos, tu peux masquer les animaux de base pour jouer uniquement avec les tiennes.
 
-L'onglet **🔊 Réglages** permet de **couper la voix du narrateur** (annonces, noms, félicitations). Les autres sons restent : piano, cris des animaux, bulles, musiques de victoire.
+L'onglet **⚙️ Réglages** permet de **couper la voix du narrateur** (annonces, noms, félicitations ; les autres sons restent) et de **choisir les jeux affichés** dans le menu.
 
 Dans chaque onglet d'images :
 - Le **nom** que tu donnes à une image est dit par la voix (« Mamie ! »).
@@ -71,6 +73,7 @@ www/
   js/admin.js         espace parents
   js/drawings.js      les dessins (coloriage + puzzles)
   js/games/*.js       un fichier par jeu
+  sounds/             cris d'animaux (mp3) et CREDITS.txt (auteurs et licences)
 ```
 
 **Tester sur le PC** (sans la tablette) :

@@ -2,9 +2,9 @@
  * Les cris des animaux : on touche un animal, il saute, on entend son cri,
  * puis la voix dit son nom. 24 animaux sur 4 pages.
  *
- * Les cris sont fabriqués en direct avec le synthétiseur du navigateur (Web Audio) :
- * oscillateurs, bruit et filtres, sans aucun fichier son. Ce sont des cris « dessin animé ».
- * Chaque cri est une liste de couches :
+ * Les cris sont de vrais enregistrements (dossier sounds/, sources libres : voir sounds/CREDITS.txt).
+ * Si un enregistrement manque, on retombe sur un cri synthétisé (Web Audio) décrit ci-dessous.
+ * Chaque cri synthétisé est une liste de couches :
  *   at   début (s)         dur  durée (s)        wave  sine|square|sawtooth|triangle|noise
  *   f    fréquence, nombre ou [[t, Hz], ...]     vol   volume max   a / r  attaque / relâche (s)
  *   filt [type, Hz, Q]     ff   fréquence du filtre au cours du temps [[t, Hz], ...]
@@ -258,6 +258,33 @@
     return len;
   }
 
+  // ------------------------------------------------------------ Vrais cris
+  // Animaux qui ont un enregistrement dans sounds/<nom>.mp3
+  var RECORDED = /*RECORDED*/['vache', 'mouton', 'poule', 'chien', 'chat', 'lion', 'elephant', 'grenouille', 'loup'];
+
+  function soundUrl(key) { return 'sounds/' + key + '.mp3'; }
+
+  // Joue le cri d'un animal ; promesse de sa durée (s). Utilisé aussi par le jeu des ombres.
+  function cry(key) {
+    if (RECORDED.indexOf(key) >= 0) {
+      if (bus) { // coupe un cri synthétisé en cours
+        bus.gain.cancelScheduledValues(0);
+        bus.gain.setValueAtTime(0, App.Sfx.ctx().currentTime);
+        bus = null;
+      }
+      return App.Sfx.sample(soundUrl(key), 'cry').then(function (len) {
+        return len || (CRIS[key] ? playCry(CRIS[key]) : 0);
+      });
+    }
+    return Promise.resolve(CRIS[key] ? playCry(CRIS[key]) : 0);
+  }
+
+  function preload(keys) {
+    keys.forEach(function (k) { if (RECORDED.indexOf(k) >= 0) App.Sfx.preload(soundUrl(k)); });
+  }
+
+  window.Animals = { cry: cry, preload: preload };
+
   // ------------------------------------------------------------ Jeu
   App.register({
     id: 'animals',
@@ -272,7 +299,7 @@
       var next = h('button', 'round-btn nav-btn right', wrap, '➡️');
       var dots = h('div', 'page-dots', wrap);
       var dotEls = PAGES.map(function () { return h('span', null, dots); });
-      var pageIdx = 0, voiceTimer = 0;
+      var pageIdx = 0, voiceTimer = 0, taps = 0;
 
       function show(i, quiet) {
         pageIdx = (i + PAGES.length) % PAGES.length;
@@ -280,19 +307,23 @@
         wrap.style.background = page.bg;
         dotEls.forEach(function (d, k) { d.classList.toggle('on', k === pageIdx); });
         if (!quiet) App.say(page.nom);
+        preload(page.list.map(function (an) { return an.snd; }));
         grid.innerHTML = '';
         page.list.forEach(function (an) {
           var b = h('button', 'animal', grid, an.e);
           b.addEventListener('pointerdown', function () {
             App.bounce(b);
-            var len = playCry(CRIS[an.snd]);
-            // la voix dit le nom juste après le cri
-            clearTimeout(voiceTimer);
-            voiceTimer = kit.later(function () { App.say("C'est " + an.nom + ' !'); }, len * 1000 + 150);
             var old = b.querySelector('.bubble-say');
             if (old) old.remove();
             var bubble = h('div', 'bubble-say', b, an.cri);
-            kit.later(function () { bubble.remove(); }, Math.max(1800, len * 1000 + 600));
+            var tapId = ++taps;
+            clearTimeout(voiceTimer);
+            cry(an.snd).then(function (len) {
+              kit.later(function () { bubble.remove(); }, Math.max(1800, len * 1000 + 600));
+              if (tapId !== taps) return; // un autre animal a été touché entre-temps
+              // la voix dit le nom juste après le cri
+              voiceTimer = kit.later(function () { App.say("C'est " + an.nom + ' !'); }, len * 1000 + 150);
+            });
           });
         });
       }

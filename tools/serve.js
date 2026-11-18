@@ -10,7 +10,7 @@ const root = ROOTS[process.argv[2] || 'www'];
 const port = Number(process.argv[3]) || 8123;
 const types = {
   '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8',
-  '.png': 'image/png', '.webp': 'image/webp', '.svg': 'image/svg+xml', '.woff2': 'font/woff2'
+  '.png': 'image/png', '.webp': 'image/webp', '.svg': 'image/svg+xml', '.woff2': 'font/woff2', '.mp3': 'audio/mpeg'
 };
 
 http.createServer((req, res) => {

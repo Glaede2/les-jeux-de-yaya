@@ -392,7 +392,9 @@
         kit.later(function () {
           App.celebrate(name ? 'Bravo ! ' + name + ' !' : null);
         }, 300);
+        var token = loadToken; // ignoré si on a changé d'image ou de niveau entre-temps
         kit.later(function () {
+          if (token !== loadToken) return;
           imgIdx = (imgIdx + 1) % sources.length;
           newPuzzle();
         }, 5000);
